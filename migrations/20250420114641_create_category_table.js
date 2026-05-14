@@ -1,9 +1,11 @@
-// Example: create_category_table.js
-exports.up = function(knex) {
-    // already created in DB, so leave empty
-  };
-  
-  exports.down = function(knex) {
-    // optional: could DROP TABLE if you want, or leave empty
-  };
-  
+exports.up = function (knex) {
+  return knex.schema.createTable("category", function (table) {
+    table.increments("id").primary();
+    table.string("name", 255).notNullable();
+    table.string("icon", 255);
+    table.string("color", 20);
+  });
+};
+exports.down = function (knex) {
+  return knex.schema.dropTable("category");
+};

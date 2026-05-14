@@ -1,9 +1,18 @@
-// Example: create_products_table.js
-exports.up = function(knex) {
-    // already created in DB, so leave empty
-  };
-  
-  exports.down = function(knex) {
-    // optional: could DROP TABLE if you want, or leave empty
-  };
-  
+exports.up = function (knex) {
+  return knex.schema.createTable("products", function (table) {
+    table.increments("product_id").primary();
+    table.string("product_name", 255).notNullable();
+    table.string("brand", 255);
+    table.decimal("price", 10, 2).notNullable();
+    table.text("description");
+    table.boolean("is_featured").defaultTo(false);
+    table
+      .integer("category_id")
+      .references("id")
+      .inTable("category")
+      .onDelete("SET NULL");
+  });
+};
+exports.down = function (knex) {
+  return knex.schema.dropTable("products");
+};
