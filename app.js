@@ -19,7 +19,7 @@ const errorHandler = require("./helper/error_handler");
 // CORS configuration
 app.use(
   cors({
-    origin: ["http://localhost:3000", "http://localhost:3001"], // Allow both frontend and admin
+    origin: ["http://localhost:3000", "http://localhost:3001",  "https://buysellpreloved.netlify.app"], // Allow both frontend and admin
     methods: "GET,POST,PUT,DELETE",
     allowedHeaders: "Content-Type,Authorization",
   })
@@ -47,6 +47,7 @@ app.use("/api/v1/admin", adminRoutes);
 app.use(errorHandler);
 
 // Server start
-app.listen(5000, () => {
-  console.log("Server is running at http://localhost:5000");
+const PORT = process.env.PORT || 5000;
+app.listen(PORT, () => {
+  console.log(`Server is running at port ${PORT}`);
 });
