@@ -9,15 +9,14 @@ function authJwt() {
     requestProperty: "user",
   }).unless({
     path: [
-      { url: /\/api\/v1\/products(.*)/, methods: ["GET", "OPTIONS"] },   // Paths that don't need JWT authentication
+      { url: /\/api\/v1\/products(.*)/, methods: ["GET", "OPTIONS"] },
       { url: /\/api\/v1\/category(.*)/, methods: ["GET", "OPTIONS"] },
       { url: /\/public\/upload(.*)/, methods: ["GET", "OPTIONS"] },
-
-      `${api}/users/login`,
-      `${api}/users/register`,
-      `${api}/users/signup`,
-      `${api}/admin/admin-login`,
-    ], // Routes that don't need JWT authentication
+      { url: /\/api\/v1\/users\/login/, methods: ["POST", "OPTIONS"] },
+      { url: /\/api\/v1\/users\/register/, methods: ["POST", "OPTIONS"] },
+      { url: /\/api\/v1\/users\/signup/, methods: ["POST", "OPTIONS"] },
+      { url: /\/api\/v1\/admin\/admin-login/, methods: ["POST", "OPTIONS"] },
+    ],
   });
 }
 
