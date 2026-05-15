@@ -3,7 +3,7 @@ const router = express.Router();
 const pool = require("../db");
 const { app } = require("../app");
 const multer = require("multer");
-const fs = require("fs"); 
+const fs = require("fs");
 const path = require("path");
 const authJwt = require("../helper/jwt");
 
@@ -146,7 +146,7 @@ router.get("/:id", async (req, res) => {
       JOIN category ON category_id = category.id 
       WHERE product_id = $1
       `,
-      [productId]
+      [productId],
     );
 
     if (productResult.rows.length === 0) {
@@ -158,7 +158,7 @@ router.get("/:id", async (req, res) => {
     // 2. Get the reviews for that product
     const reviewsResult = await pool.query(
       `SELECT * FROM reviews WHERE product_id = $1 ORDER BY created_at DESC`,
-      [productId]
+      [productId],
     );
 
     // 3. Determine if the product has a confirmed report
@@ -189,7 +189,7 @@ router.post(
       console.log("Authenticated User:", req.user); // Will now show user info
       console.log(
         "User ID from JWT Token:",
-        req.user ? req.user.userId : "User ID not found"
+        req.user ? req.user.userId : "User ID not found",
       );
       console.log("Category ID in request body:", req.body.category_id);
 
@@ -212,7 +212,7 @@ router.post(
       if (!file) {
         return res.status(400).send("No image in the request");
       }
-       
+
       //create accessible url for upload image
 
       const fileName = file.filename;
@@ -254,7 +254,7 @@ router.post(
       console.error("Error occurred:", err);
       res.status(500).send(err.message || "Server error");
     }
-  }
+  },
 );
 
 router.put("/:id", async (req, res) => {
@@ -316,7 +316,7 @@ router.delete("/:id", async (req, res) => {
   try {
     const result = await pool.query(
       "DELETE FROM products WHERE product_id =  $1 RETURNING *",
-      [productId]
+      [productId],
     );
     if (result.rowCount === 0) {
       res.status(404).json({ success: false, message: "product not found" });
@@ -357,7 +357,7 @@ router.get("/get/featuredproducts/:count", async (req, res) => {
        ON p.category_id = c.id 
        WHERE p.is_featured = true 
        LIMIT $1`,
-      [count]
+      [count],
     );
 
     if (result.rows.length === 0) {
@@ -367,9 +367,9 @@ router.get("/get/featuredproducts/:count", async (req, res) => {
     }
 
     if (result.rows.length < count) {
-      return res.status(500).json({
-        success: false,
-        message: `Only ${result.rows.length} featured products found`,
+      return res.status(200).json({
+        success: true,
+        featuredproducts: result.rows,
       });
     }
 
@@ -382,8 +382,6 @@ router.get("/get/featuredproducts/:count", async (req, res) => {
     });
   }
 });
-
-
 
 // GET /api/v1/products/user/:id
 router.get("/user/:id", async (req, res) => {
